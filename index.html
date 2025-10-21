@@ -1,1153 +1,1011 @@
 <!doctype html>
 <html lang="pt-BR">
- <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Consultor Técnico CDO - IA</title>
-  <script src="/_sdk/data_sdk.js"></script>
-  <script src="/_sdk/element_sdk.js"></script>
-  <style>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Interativo de Óculos</title>
+    <script src="/_sdk/element_sdk.js"></script>
+    <style>
         body {
             box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
-            color: #ffffff;
-            min-height: 100%;
-            overflow-x: hidden;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
+            background: linear-gradient(135deg, #1a202c 0%, #2d3748 50%, #4a5568 100%);
             min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #e2e8f0;
         }
 
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-            animation: fadeInDown 1s ease-out;
-        }
-
-        .logo {
-            font-size: 2.5rem;
-            font-weight: 800;
-            background: linear-gradient(45deg, #00d4ff, #0099cc, #0066ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 10px;
-        }
-
-        .subtitle {
-            font-size: 1.1rem;
-            color: #a0a0a0;
-            margin-bottom: 30px;
-        }
-
-        .welcome-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .intro-screen {
+            background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
             border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 90%;
+            padding: 60px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #4a5568;
+        }
+
+        .quiz-container {
+            background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 90%;
             padding: 40px;
             text-align: center;
-            margin-bottom: 30px;
-            animation: fadeInUp 1s ease-out 0.3s both;
-        }
-
-        .welcome-icon {
-            font-size: 4rem;
-            margin-bottom: 20px;
-            animation: bounce 2s infinite;
-        }
-
-        .question-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 30px;
-            margin-bottom: 20px;
-            animation: slideInRight 0.5s ease-out;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #4a5568;
             display: none;
         }
 
-        .question-card.active {
-            display: block;
+        .logo-container {
+            margin-bottom: 30px;
         }
 
-        .question-title {
+        .logo {
+            width: 150px;
+            height: 150px;
+            background-image: url('https://github.com/MarceloGomes-Dev/oticaCDO/blob/main/Logo.png?raw=true');
+            background-size: cover;
+            background-position: center;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            animation: logoFloat 3s ease-in-out infinite;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .company-name {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #e2e8f0;
+            margin-bottom: 10px;
+            animation: fadeInUp 1s ease-out 0.5s both;
+        }
+
+        .consultant-intro {
             font-size: 1.3rem;
+            color: #cbd5e0;
+            margin-bottom: 30px;
+            animation: fadeInUp 1s ease-out 1s both;
+        }
+
+        .consultant-name {
+            color: #667eea;
             font-weight: 600;
-            margin-bottom: 20px;
-            color: #00d4ff;
         }
 
-        .options {
-            display: grid;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .option {
-            background: rgba(255, 255, 255, 0.08);
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 20px;
+        .start-button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 15px;
+            animation: fadeInUp 1s ease-out 1.5s both;
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
         }
 
-        .option:hover {
-            background: rgba(0, 212, 255, 0.1);
-            border-color: #00d4ff;
-            transform: translateY(-2px);
+        .start-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
         }
 
-        .option.selected {
-            background: rgba(0, 212, 255, 0.2);
-            border-color: #00d4ff;
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        .quiz-header {
+            margin-bottom: 30px;
         }
 
-        .option-icon {
-            font-size: 1.5rem;
-            min-width: 30px;
+        .quiz-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #e2e8f0;
+            margin-bottom: 10px;
         }
 
-        .option-text {
-            flex: 1;
-        }
-
-        .option-title {
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .option-desc {
-            font-size: 0.9rem;
-            color: #a0a0a0;
+        .welcome-message {
+            font-size: 1.1rem;
+            color: #cbd5e0;
+            margin-bottom: 20px;
         }
 
         .progress-bar {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
+            width: 100%;
             height: 8px;
+            background: #4a5568;
+            border-radius: 4px;
             margin-bottom: 30px;
             overflow: hidden;
         }
 
         .progress-fill {
-            background: linear-gradient(90deg, #00d4ff, #0099cc);
             height: 100%;
-            border-radius: 10px;
-            transition: width 0.5s ease;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 4px;
+            transition: width 0.3s ease;
             width: 0%;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
         }
 
-        .navigation {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 30px;
+        .question-container {
+            margin-bottom: 30px;
         }
 
-        .btn {
-            background: linear-gradient(45deg, #00d4ff, #0099cc);
-            border: none;
-            border-radius: 15px;
-            padding: 15px 30px;
-            color: white;
+        .question-number {
+            font-size: 0.9rem;
+            color: #a0aec0;
+            margin-bottom: 10px;
+        }
+
+        .question-text {
+            font-size: 1.4rem;
             font-weight: 600;
+            color: #e2e8f0;
+            margin-bottom: 25px;
+            line-height: 1.4;
+        }
+
+        .options-container {
+            display: grid;
+            gap: 15px;
+        }
+
+        .option-button {
+            background: #1a202c;
+            border: 2px solid #4a5568;
+            border-radius: 12px;
+            padding: 20px;
+            font-size: 1rem;
+            color: #e2e8f0;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-size: 1rem;
+            text-align: left;
+            position: relative;
         }
 
-        .btn:hover {
+        .option-button:hover {
+            background: #2d3748;
+            border-color: #667eea;
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0, 212, 255, 0.3);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
         }
 
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
+        .option-button.selected {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-color: #667eea;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
         }
 
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .result-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 40px;
-            margin-bottom: 30px;
+        .result-container {
             display: none;
-            animation: fadeInUp 1s ease-out;
-        }
-
-        .result-header {
             text-align: center;
-            margin-bottom: 40px;
         }
 
         .result-title {
             font-size: 2rem;
-            font-weight: 700;
-            color: #00d4ff;
-            margin-bottom: 10px;
+            font-weight: bold;
+            color: #e2e8f0;
+            margin-bottom: 20px;
         }
 
-        .profile-badge {
-            display: inline-block;
-            background: linear-gradient(45deg, #00d4ff, #0099cc);
-            padding: 8px 20px;
-            border-radius: 25px;
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-
-        .analysis-section {
-            margin-bottom: 30px;
-        }
-
-        .section-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: #00d4ff;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .recommendation-grid {
-            display: grid;
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .recommendation-item {
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 15px;
+        .recommendation-card {
+            background: #1a202c;
+            border: 1px solid #4a5568;
+            border-radius: 12px;
             padding: 25px;
-            border-left: 4px solid #00d4ff;
+            margin: 20px 0;
+            text-align: left;
         }
 
-        .item-title {
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: #ffffff;
-        }
-
-        .item-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .item-list li {
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .item-list li:last-child {
-            border-bottom: none;
-        }
-
-        .offer-card {
-            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(0, 153, 204, 0.1));
-            border: 2px solid #00d4ff;
-            border-radius: 20px;
-            padding: 30px;
-            text-align: center;
-            margin: 30px 0;
-        }
-
-        .offer-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #00d4ff;
-            margin-bottom: 15px;
-        }
-
-        .discount-badge {
-            background: linear-gradient(45deg, #ff6b35, #f7931e);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 25px;
-            font-weight: 700;
+        .recommendation-title {
             font-size: 1.2rem;
-            display: inline-block;
-            margin: 15px 0;
-        }
-
-        .share-section {
-            text-align: center;
-            margin-top: 40px;
-        }
-
-        .share-btn {
-            background: linear-gradient(45deg, #25d366, #128c7e);
-            border: none;
-            border-radius: 15px;
-            padding: 20px 40px;
-            color: white;
             font-weight: 600;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .recommendation-text {
+            color: #cbd5e0;
+            line-height: 1.6;
+        }
+
+        .discount-banner {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .discount-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .share-button {
+            background: #4299e1;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
             cursor: pointer;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
+            margin-top: 10px;
+            transition: background 0.3s ease;
         }
 
-        .share-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3);
+        .share-button:hover {
+            background: #3182ce;
         }
 
-        .loading {
+        .restart-button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background 0.3s ease;
+        }
+
+        .restart-button:hover {
+            background: #5a67d8;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .success-screen {
+            background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 90%;
+            padding: 60px 40px;
             text-align: center;
-            padding: 40px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #4a5568;
             display: none;
         }
 
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 3px solid rgba(255, 255, 255, 0.1);
-            border-top: 3px solid #00d4ff;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
+        .success-animation {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: bounce 1s ease-in-out;
         }
 
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
+        .discount-message {
+            font-size: 1.5rem;
+            color: #48bb78;
+            font-weight: bold;
+            margin-bottom: 20px;
+            animation: fadeInUp 1s ease-out 0.5s both;
+        }
+
+        @keyframes logoFloat {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
         }
 
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
 
-        @keyframes slideInRight {
-            from { opacity: 0; transform: translateX(30px); }
-            to { opacity: 1; transform: translateX(0); }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-10px); }
-            60% { transform: translateY(-5px); }
+
+            0%,
+            20%,
+            53%,
+            80%,
+            100% {
+                transform: translateY(0);
+            }
+
+            40%,
+            43% {
+                transform: translateY(-30px);
+            }
+
+            70% {
+                transform: translateY(-15px);
+            }
+
+            90% {
+                transform: translateY(-4px);
+            }
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .hidden {
-            display: none !important;
+        .slide-in {
+            animation: slideIn 0.4s ease-out;
         }
 
-        @media (max-width: 768px) {
-            .container {
-                padding: 15px;
+        @keyframes slideIn {
+            from {
+                transform: translateX(30px);
+                opacity: 0;
             }
-            
-            .welcome-card, .question-card, .result-card {
-                padding: 25px;
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
             }
-            
-            .logo {
-                font-size: 2rem;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
             }
-            
-            .navigation {
-                flex-direction: column;
-                gap: 15px;
+
+            50% {
+                transform: scale(1.05);
             }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .completion-animation {
+            animation: pulse 0.6s ease-in-out;
         }
     </style>
-  <style>@view-transition { navigation: auto; }</style>
-  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
- </head>
- <body>
-  <div class="container">
-   <div class="header">
-    <div class="logo" id="companyName">
-     CDO
+    <style>
+        @view-transition {
+            navigation: auto;
+        }
+    </style>
+    <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+    <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+</head>
+
+<body>
+    <div class="intro-screen" id="introScreen">
+        <div class="logo-container">
+            <div class="logo">
+            </div>
+        </div>
+        <h1 class="company-name">Óticas CDO</h1>
+        <p class="consultant-intro">Olá! Eu sou <span class="consultant-name">Iris</span>, sua consultora virtual.<br>
+            Posso te ajudar a escolher as melhores lentes que se encaixam no seu perfil.</p><button class="start-button"
+            onclick="startQuiz()">Vamos Começar! 🚀</button>
     </div>
-    <div class="subtitle">
-     Consultor Técnico Digital com IA
+    <div class="quiz-container" id="quizContainer">
+        <div class="quiz-header">
+            <h1 class="quiz-title">Quiz Personalizado de Óculos</h1>
+            <p class="welcome-message">Descubra as lentes ideais para você em apenas 10 perguntas!</p>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="question-container" id="questionContainer">
+            <div class="question-number" id="questionNumber">
+                Pergunta 1 de 10
+            </div>
+            <h2 class="question-text" id="questionText"></h2>
+            <div class="options-container" id="optionsContainer"></div>
+        </div>
+        <div class="result-container" id="resultContainer">
+            <h2 class="result-title">Suas Recomendações Personalizadas</h2>
+            <div id="recommendationsContent"></div>
+            <div class="discount-banner">
+                <div class="discount-title">
+                    🎉 Oferta Especial!
+                </div>
+                <p>Compartilhe seu resultado e ganhe 20% de desconto na sua primeira compra!</p><button
+                    class="share-button" onclick="shareResult()">Compartilhar Resultado</button>
+            </div><button class="restart-button" onclick="restartQuiz()">Fazer Quiz Novamente</button>
+        </div>
     </div>
-   </div>
-   <div class="progress-bar">
-    <div class="progress-fill" id="progressFill"></div>
-   </div><!-- Tela de Boas-vindas -->
-   <div class="welcome-card" id="welcomeScreen">
-    <div class="welcome-icon">
-     👋
+    <div class="success-screen" id="successScreen">
+        <div class="success-animation">
+            🎉
+        </div>
+        <div class="discount-message">
+            Parabéns!
+        </div>
+        <p style="color: #e2e8f0; font-size: 1.2rem; margin-bottom: 20px;">Você ganhou <strong
+                style="color: #48bb78;">20% de desconto</strong> na sua primeira compra!</p>
+        <p style="color: #cbd5e0; margin-bottom: 30px;">Apresente este cupom em qualquer loja Óticas CDO ou use o código
+            <strong>QUIZ20</strong> no site.</p><button class="restart-button" onclick="backToResults()">Voltar aos
+            Resultados</button>
     </div>
-    <h2>Olá! Eu sou seu consultor técnico especializado</h2>
-    <p id="welcomeMessage">Vamos descobrir juntos qual é a lente perfeita para o seu estilo de vida? 😎</p>
-    <p>Através de perguntas inteligentes, vou analisar seu perfil visual e recomendar as melhores opções de lentes e tratamentos.</p><button class="btn" onclick="startQuestionnaire()"> 🚀 Começar Análise Técnica </button>
-   </div><!-- Questionário Dinâmico -->
-   <div class="question-card" id="questionCard">
-    <div class="question-title" id="questionTitle"></div>
-    <div class="options" id="optionsContainer"></div>
-    <div class="navigation"><button class="btn btn-secondary" id="prevBtn" onclick="previousQuestion()" disabled> ← Anterior </button> <button class="btn" id="nextBtn" onclick="nextQuestion()" disabled> Próxima → </button>
-    </div>
-   </div><!-- Loading -->
-   <div class="loading" id="loadingScreen">
-    <div class="spinner"></div>
-    <h3>🧠 Analisando seu perfil com IA...</h3>
-    <p>Processando suas respostas e gerando recomendações personalizadas</p>
-   </div><!-- Resultado -->
-   <div class="result-card" id="resultScreen">
-    <div class="result-header">
-     <div class="result-title">
-      🧠 Análise Técnica CDO
-     </div>
-     <div class="profile-badge" id="profileBadge">
-      Perfil Identificado
-     </div>
-    </div>
-    <div class="analysis-section">
-     <div class="section-title">
-      📊 Seu Perfil Visual
-     </div>
-     <div id="profileAnalysis"></div>
-    </div>
-    <div class="recommendation-grid">
-     <div class="recommendation-item">
-      <div class="section-title">
-       ⭐ Lentes Recomendadas
-      </div>
-      <ul class="item-list" id="lensRecommendations"></ul>
-     </div>
-     <div class="recommendation-item">
-      <div class="section-title">
-       🔬 Tratamentos Ideais
-      </div>
-      <ul class="item-list" id="treatmentRecommendations"></ul>
-     </div>
-    </div>
-    <div class="offer-card">
-     <div class="offer-title">
-      🎁 Oferta Personalizada
-     </div>
-     <div id="personalizedOffer"></div>
-     <div class="discount-badge">
-      25% OFF
-     </div>
-     <p><strong>Compartilhe com amigos e ganhe +5% extra!</strong><br><small style="color: #a0a0a0;">(Desconto não acumulativo - válido o maior)</small></p>
-    </div>
-    <div class="share-section">
-     <div style="display: grid; gap: 15px; max-width: 400px; margin: 0 auto;"><button class="share-btn" onclick="printResult()"> 🖨️ Imprimir Resultado </button> <button class="share-btn" onclick="shareResult()"> 📱 Compartilhar no WhatsApp </button> <button class="share-btn" style="background: linear-gradient(45deg, #1877f2, #42a5f5);" onclick="shareToSocial()"> 📤 Compartilhar com Amigos (+5%) </button>
-     </div>
-     <div style="margin-top: 30px; padding: 20px; background: rgba(255,255,255,0.05); border-radius: 15px;">
-      <h4 style="color: #00d4ff; margin-bottom: 15px;">📞 Solicitar Orçamento Detalhado</h4>
-      <p style="margin-bottom: 15px;">Envie este resultado e receba um orçamento personalizado!</p>
-      <p id="contactInfo" style="color: #a0a0a0;">WhatsApp: (11) 99999-9999</p>
-     </div>
-    </div>
-   </div>
-  </div>
-  <script>
+    <script>
+        // Lista de consultores virtuais com sexo definido
+        const consultants = {
+            female: [
+                "Iris", "Luna", "Sofia", "Clara", "Maya", "Lara", "Nina", "Eva", "Zara", "Mia",
+                "Ana", "Beatriz", "Camila", "Diana", "Fernanda", "Gabriela", "Helena", "Juliana", "Letícia", "Mariana"
+            ],
+            male: [
+                "Alex", "Bruno", "Carlos", "Diego", "Eduardo", "Felipe", "Gabriel", "Hugo", "Ivan", "João",
+                "Leonardo", "Marcos", "Nicolas", "Otávio", "Pedro", "Marcelo", "Samuel", "Thiago", "Victor", "William"
+            ]
+        };
+
+        // Função para selecionar consultor aleatório
+        function getRandomConsultant() {
+            const gender = Math.random() > 0.5 ? 'female' : 'male';
+            const names = consultants[gender];
+            const name = names[Math.floor(Math.random() * names.length)];
+            return { name, gender };
+        }
+
         // Configuração padrão
+        const selectedConsultant = getRandomConsultant();
         const defaultConfig = {
-            company_name: "CDO - Central de Diagnóstico Óptico",
-            welcome_message: "Vamos descobrir juntos qual é a lente perfeita para o seu estilo de vida? 😎",
-            contact_info: "WhatsApp: (11) 99999-9999"
+            company_name: "Óticas CDO",
+            consultant_name: selectedConsultant.name,
+            consultant_gender: selectedConsultant.gender,
+            welcome_message: "Posso te ajudar a escolher as melhores lentes que se encaixam no seu perfil.",
+            discount_text: "Compartilhe seu resultado e ganhe 20% de desconto na sua primeira compra!"
         };
 
-        // Estado da aplicação
+        // Estado do quiz
         let currentQuestion = 0;
-        let answers = {};
-        let questionnaire = [];
-        let currentData = [];
+        let answers = [];
+        let userProfile = { ageGroup: '', usesGlasses: '' };
 
-        // Questionário inteligente com 12 perguntas condicionais
-        const baseQuestions = [
+        // Perguntas fixas (primeiras 2)
+        const fixedQuestions = [
             {
-                id: 'age',
-                title: '📅 Qual sua faixa etária?',
+                id: 1,
+                text: "Você se encaixa em qual faixa etária?",
                 options: [
-                    { value: '16-25', icon: '🧒', title: '16-25 anos', desc: 'Jovem adulto' },
-                    { value: '26-35', icon: '👨', title: '26-35 anos', desc: 'Adulto jovem' },
-                    { value: '36-45', icon: '👩', title: '36-45 anos', desc: 'Adulto' },
-                    { value: '46-60', icon: '👨‍💼', title: '46-60 anos', desc: 'Adulto maduro' },
-                    { value: '60+', icon: '👴', title: '60+ anos', desc: 'Terceira idade' }
+                    { text: "Jovem (até 30 anos)", value: "young" },
+                    { text: "Adulto (31-50 anos)", value: "young" },
+                    { text: "Maduro (51-65 anos)", value: "old" },
+                    { text: "Sênior (acima de 65 anos)", value: "old" }
                 ]
             },
             {
-                id: 'uses_glasses',
-                title: '👓 Você já usa óculos atualmente?',
+                id: 2,
+                text: "Qual sua relação atual com óculos?",
                 options: [
-                    { value: 'yes', icon: '👓', title: 'Sim, uso óculos', desc: 'Já tenho correção visual' },
-                    { value: 'no', icon: '👁️', title: 'Não uso óculos', desc: 'Primeira vez ou não uso' },
-                    { value: 'sometimes', icon: '🕶️', title: 'Às vezes', desc: 'Uso esporadicamente' },
-                    { value: 'contact', icon: '👁️‍🗨️', title: 'Uso lentes de contato', desc: 'Prefiro lentes de contato' }
+                    { text: "Sim, uso sempre", value: "uses" },
+                    { text: "Sim, mas só para leitura", value: "uses" },
+                    { text: "Não uso, mas sinto necessidade", value: "doesnt_use" },
+                    { text: "Não uso e não sinto necessidade", value: "doesnt_use" }
                 ]
             }
         ];
 
-        // Perguntas condicionais para quem JÁ USA óculos
-        const questionsForGlassUsers = [
-            {
-                id: 'current_problem',
-                title: '🔍 Qual o principal problema com seus óculos atuais?',
-                condition: (answers) => ['yes', 'sometimes'].includes(answers.uses_glasses),
-                options: [
-                    { value: 'outdated', icon: '⏰', title: 'Grau desatualizado', desc: 'Preciso atualizar a receita' },
-                    { value: 'uncomfortable', icon: '😣', title: 'Desconforto', desc: 'Dor de cabeça ou cansaço' },
-                    { value: 'scratched', icon: '💥', title: 'Lentes riscadas', desc: 'Lentes danificadas' },
-                    { value: 'style', icon: '👗', title: 'Quero mudar o estilo', desc: 'Armação ou design' },
-                    { value: 'multiple_pairs', icon: '👓', title: 'Preciso de outro par', desc: 'Óculos adicional' }
-                ]
-            },
-            {
-                id: 'satisfaction',
-                title: '⭐ Como avalia seus óculos atuais?',
-                condition: (answers) => ['yes', 'sometimes'].includes(answers.uses_glasses),
-                options: [
-                    { value: 'very_satisfied', icon: '😍', title: 'Muito satisfeito', desc: 'Amo meus óculos' },
-                    { value: 'satisfied', icon: '😊', title: 'Satisfeito', desc: 'Cumprem bem a função' },
-                    { value: 'neutral', icon: '😐', title: 'Neutro', desc: 'Nem bom nem ruim' },
-                    { value: 'unsatisfied', icon: '😕', title: 'Insatisfeito', desc: 'Vários problemas' },
-                    { value: 'very_unsatisfied', icon: '😤', title: 'Muito insatisfeito', desc: 'Preciso trocar urgente' }
-                ]
-            },
-            {
-                id: 'lens_type_current',
-                title: '🔬 Que tipo de lente você usa atualmente?',
-                condition: (answers) => ['yes', 'sometimes'].includes(answers.uses_glasses),
-                options: [
-                    { value: 'single', icon: '🔍', title: 'Monofocal', desc: 'Uma distância apenas' },
-                    { value: 'bifocal', icon: '👀', title: 'Bifocal', desc: 'Duas distâncias' },
-                    { value: 'progressive', icon: '🌈', title: 'Progressiva', desc: 'Múltiplas distâncias' },
-                    { value: 'reading', icon: '📖', title: 'Só para leitura', desc: 'Apenas perto' },
-                    { value: 'dont_know', icon: '🤷', title: 'Não sei', desc: 'Não tenho certeza' }
-                ]
-            }
-        ];
-
-        // Perguntas condicionais para quem NÃO USA óculos
-        const questionsForNonUsers = [
-            {
-                id: 'vision_complaints',
-                title: '👁️ Você sente alguma dificuldade visual?',
-                condition: (answers) => ['no', 'contact'].includes(answers.uses_glasses),
-                options: [
-                    { value: 'distance', icon: '🔭', title: 'Ver de longe', desc: 'Placas, TV, quadro' },
-                    { value: 'near', icon: '📱', title: 'Ver de perto', desc: 'Celular, livros, textos' },
-                    { value: 'both', icon: '👁️‍🗨️', title: 'Longe e perto', desc: 'Ambas as distâncias' },
-                    { value: 'night', icon: '🌙', title: 'Visão noturna', desc: 'Dirigir à noite' },
-                    { value: 'none', icon: '✅', title: 'Nenhuma dificuldade', desc: 'Vejo bem' }
-                ]
-            },
-            {
-                id: 'eye_exam',
-                title: '🏥 Quando foi seu último exame oftalmológico?',
-                condition: (answers) => ['no', 'contact'].includes(answers.uses_glasses),
-                options: [
-                    { value: 'recent', icon: '📅', title: 'Menos de 1 ano', desc: 'Exame recente' },
-                    { value: 'year', icon: '📆', title: '1-2 anos atrás', desc: 'Preciso atualizar' },
-                    { value: 'old', icon: '⏳', title: 'Mais de 2 anos', desc: 'Faz tempo' },
-                    { value: 'never', icon: '❌', title: 'Nunca fiz', desc: 'Primeira vez' }
-                ]
-            },
-            {
-                id: 'motivation',
-                title: '🎯 Por que está considerando usar óculos?',
-                condition: (answers) => ['no', 'contact'].includes(answers.uses_glasses),
-                options: [
-                    { value: 'prevention', icon: '🛡️', title: 'Prevenção', desc: 'Proteger a visão' },
-                    { value: 'symptoms', icon: '😵', title: 'Sintomas visuais', desc: 'Dor de cabeça, cansaço' },
-                    { value: 'work', icon: '💻', title: 'Trabalho/estudos', desc: 'Muito tempo em telas' },
-                    { value: 'style', icon: '😎', title: 'Estética', desc: 'Gosto do visual' },
-                    { value: 'recommendation', icon: '👨‍⚕️', title: 'Recomendação médica', desc: 'Oftalmologista indicou' }
-                ]
-            }
-        ];
-
-        // Perguntas universais (para todos)
-        const universalQuestions = [
-            {
-                id: 'screen_time',
-                title: '💻 Quanto tempo passa em telas por dia?',
-                options: [
-                    { value: '0-2h', icon: '📱', title: '0-2 horas', desc: 'Uso mínimo' },
-                    { value: '3-5h', icon: '💻', title: '3-5 horas', desc: 'Uso moderado' },
-                    { value: '6-8h', icon: '🖥️', title: '6-8 horas', desc: 'Uso intenso' },
-                    { value: '8h+', icon: '⌨️', title: 'Mais de 8h', desc: 'Uso profissional' }
-                ]
-            },
-            {
-                id: 'lifestyle',
-                title: '🏃‍♂️ Qual seu estilo de vida predominante?',
-                options: [
-                    { value: 'office', icon: '🏢', title: 'Escritório', desc: 'Trabalho interno, computador' },
-                    { value: 'outdoor', icon: '🌞', title: 'Atividades externas', desc: 'Muito tempo ao ar livre' },
-                    { value: 'mixed', icon: '🔄', title: 'Misto', desc: 'Interno e externo' },
-                    { value: 'student', icon: '📚', title: 'Estudante', desc: 'Leitura e estudos' },
-                    { value: 'driver', icon: '🚗', title: 'Motorista', desc: 'Muito tempo dirigindo' },
-                    { value: 'sports', icon: '⚽', title: 'Esportista', desc: 'Atividades físicas' }
-                ]
-            },
-            {
-                id: 'symptoms',
-                title: '😵 Quais sintomas você sente frequentemente?',
-                options: [
-                    { value: 'headache', icon: '🤕', title: 'Dor de cabeça', desc: 'Frequentes dores' },
-                    { value: 'eye_strain', icon: '😴', title: 'Cansaço visual', desc: 'Olhos cansados' },
-                    { value: 'dry_eyes', icon: '💧', title: 'Olhos secos', desc: 'Ressecamento ocular' },
-                    { value: 'blurred', icon: '🌫️', title: 'Visão embaçada', desc: 'Dificuldade de foco' },
-                    { value: 'sensitivity', icon: '☀️', title: 'Sensibilidade à luz', desc: 'Incomodo com claridade' },
-                    { value: 'none', icon: '✅', title: 'Nenhum sintoma', desc: 'Sem desconfortos' }
-                ]
-            },
-            {
-                id: 'priority',
-                title: '🎯 Qual sua principal prioridade?',
-                options: [
-                    { value: 'comfort', icon: '😌', title: 'Conforto visual', desc: 'Máximo bem-estar' },
-                    { value: 'aesthetics', icon: '✨', title: 'Estética', desc: 'Aparência e design' },
-                    { value: 'protection', icon: '🛡️', title: 'Proteção', desc: 'Saúde dos olhos' },
-                    { value: 'durability', icon: '💪', title: 'Durabilidade', desc: 'Resistência e qualidade' },
-                    { value: 'technology', icon: '🔬', title: 'Tecnologia', desc: 'Inovação e recursos' },
-                    { value: 'price', icon: '💰', title: 'Custo-benefício', desc: 'Melhor preço' }
-                ]
-            },
-            {
-                id: 'budget',
-                title: '💳 Qual seu orçamento para lentes?',
-                options: [
-                    { value: 'essential', icon: '💵', title: 'Essencial', desc: 'R$ 200-500' },
-                    { value: 'premium', icon: '💎', title: 'Premium', desc: 'R$ 500-1200' },
-                    { value: 'luxury', icon: '👑', title: 'Luxo', desc: 'R$ 1200+' },
-                    { value: 'flexible', icon: '🤝', title: 'Flexível', desc: 'Depende da qualidade' }
-                ]
-            }
-        ];
-
-        let questions = [];
-
-        // Handler para dados
-        const dataHandler = {
-            onDataChanged(data) {
-                currentData = data;
-            }
+        // Perguntas condicionais baseadas no perfil
+        const conditionalQuestions = {
+            young_uses: [
+                { text: "Qual atividade você mais faz no dia a dia?", options: ["Trabalho no computador", "Estudo", "Atividades ao ar livre", "Uso de celular/tablet"] },
+                { text: "Que tipo de problema visual você tem?", options: ["Miopia  (Dificuldade para enxergar de longe)", "Hipermetropia  (Dificuldade para enxergar de perto)", "Astigmatismo  (Visão borrada ou distorcida em todas as distâncias)", "Presbiopia  (Dificuldade para focar de perto)"] },
+                { text: "Com que frequência você usa dispositivos digitais?", options: ["Mais de 8 horas por dia", "4-8 horas por dia", "2-4 horas por dia", "Menos de 2 horas"] },
+                { text: "Você sente desconforto visual ao final do dia?", options: ["Sempre", "Frequentemente", "Às vezes", "Nunca"] },
+                { text: "Qual estilo de armação você prefere?", options: ["Moderno e arrojado", "Clássico e elegante", "Esportivo", "Minimalista"] },
+                { text: "Você pratica esportes regularmente?", options: ["Sim, esportes aquáticos", "Sim, esportes ao ar livre", "Sim, academia/indoor", "Não pratico"] },
+                { text: "Qual sua prioridade na escolha das lentes?", options: ["Proteção UV", "Resistência a riscos", "Leveza", "Durabilidade"] },
+                { text: "Você se incomoda com reflexos nas lentes?", options: ["Muito", "Moderadamente", "Pouco", "Não me incomodo"] }
+            ],
+            young_doesnt_use: [
+                { text: "Você sente dificuldade para enxergar à distância?", options: ["Sim, muito", "Sim, um pouco", "Raramente", "Nunca"] },
+                { text: "Você tem dores de cabeça frequentes?", options: ["Diariamente", "Algumas vezes por semana", "Raramente", "Nunca"] },
+                { text: "Quanto tempo você passa em frente a telas?", options: ["Mais de 8 horas", "4-8 horas", "2-4 horas", "Menos de 2 horas"] },
+                { text: "Você força os olhos para ler textos pequenos?", options: ["Sempre", "Frequentemente", "Às vezes", "Nunca"] },
+                { text: "Qual seu estilo pessoal?", options: ["Moderno e tecnológico", "Clássico", "Casual", "Esportivo"] },
+                { text: "Você trabalha muito ao ar livre?", options: ["Sim, sempre", "Frequentemente", "Às vezes", "Raramente"] },
+                { text: "Você se preocupa com proteção solar nos olhos?", options: ["Muito", "Moderadamente", "Pouco", "Não me preocupo"] },
+                { text: "Qual seria seu maior receio em usar óculos?", options: ["Mudança na aparência", "Desconforto", "Custo", "Manutenção"] }
+            ],
+            old_uses: [
+                { text: "Há quanto tempo você usa óculos?", options: ["Mais de 20 anos", "10-20 anos", "5-10 anos", "Menos de 5 anos"] },
+                { text: "Qual sua maior dificuldade visual atualmente?", options: ["Leitura de perto", "Visão à distância", "Visão noturna", "Transição claro/escuro"] },
+                { text: "Você usa óculos multifocais?", options: ["Sim, e me adapto bem", "Sim, mas tenho dificuldades", "Não, mas gostaria de experimentar", "Não, prefiro óculos separados"] },
+                { text: "Você sente os olhos secos com frequência?", options: ["Sempre", "Frequentemente", "Às vezes", "Nunca"] },
+                { text: "Qual tipo de atividade você mais valoriza?", options: ["Leitura", "Trabalhos manuais", "Assistir TV", "Atividades ao ar livre"] },
+                { text: "Você tem sensibilidade à luz?", options: ["Muito sensível", "Moderadamente sensível", "Pouco sensível", "Não tenho sensibilidade"] },
+                { text: "Qual sua prioridade em lentes?", options: ["Conforto visual", "Facilidade de limpeza", "Durabilidade", "Estética"] },
+                { text: "Você prefere armações:", options: ["Leves e discretas", "Robustas e seguras", "Elegantes e sofisticadas", "Práticas e funcionais"] }
+            ],
+            old_doesnt_use: [
+                { text: "Você tem dificuldade para ler letras pequenas?", options: ["Sim, muita", "Sim, alguma", "Pouca", "Nenhuma"] },
+                { text: "Você segura objetos longe para enxergar melhor?", options: ["Sempre", "Frequentemente", "Às vezes", "Nunca"] },
+                { text: "Você sente cansaço visual ao ler?", options: ["Sempre", "Frequentemente", "Às vezes", "Nunca"] },
+                { text: "Você tem histórico familiar de problemas visuais?", options: ["Sim, vários casos", "Sim, alguns casos", "Poucos casos", "Nenhum caso"] },
+                { text: "Qual atividade você mais gostaria de melhorar?", options: ["Leitura", "Trabalhos detalhados", "Dirigir", "Assistir TV"] },
+                { text: "Você evita atividades por dificuldade visual?", options: ["Sim, várias", "Sim, algumas", "Raramente", "Nunca"] },
+                { text: "Como você se sente sobre usar óculos?", options: ["Totalmente aberto à ideia", "Curioso para experimentar", "Um pouco resistente", "Muito resistente"] },
+                { text: "Qual seria sua maior preocupação?", options: ["Dependência dos óculos", "Aparência", "Conforto", "Custo"] }
+            ]
         };
 
-        // Inicialização
-        async function init() {
-            try {
-                if (window.dataSdk) {
-                    const result = await window.dataSdk.init(dataHandler);
-                    if (!result.isOk) {
-                        console.error('Erro ao inicializar Data SDK');
-                    }
-                }
-
-                if (window.elementSdk) {
-                    await window.elementSdk.init({
-                        defaultConfig,
-                        render,
-                        mapToCapabilities,
-                        mapToEditPanelValues
-                    });
-                }
-            } catch (error) {
-                console.error('Erro na inicialização:', error);
-            }
-        }
-
-        // Função de renderização
-        async function render(config) {
+        // Função para renderizar baseada na configuração
+        function render(config) {
             const companyName = config.company_name || defaultConfig.company_name;
+            const consultantName = config.consultant_name || defaultConfig.consultant_name;
+            const consultantGender = config.consultant_gender || defaultConfig.consultant_gender;
             const welcomeMessage = config.welcome_message || defaultConfig.welcome_message;
-            const contactInfo = config.contact_info || defaultConfig.contact_info;
+            const discountText = config.discount_text || defaultConfig.discount_text;
 
-            document.getElementById('companyName').textContent = companyName.split(' ')[0] || 'CDO';
-            document.getElementById('welcomeMessage').textContent = welcomeMessage;
-            document.getElementById('contactInfo').textContent = contactInfo;
-        }
+            // Definir pronome baseado no gênero
+            const pronoun = consultantGender === 'female' ? 'sua consultora' : 'seu consultor';
 
-        // Capabilities
-        function mapToCapabilities(config) {
-            return {
-                recolorables: [],
-                borderables: [],
-                fontEditable: undefined,
-                fontSizeable: undefined
-            };
-        }
+            // Atualizar tela de abertura
+            document.querySelector('.company-name').textContent = companyName;
+            document.querySelector('.consultant-name').textContent = consultantName;
+            document.querySelector('.consultant-intro').innerHTML =
+                `Olá! Eu sou <span class="consultant-name">${consultantName}</span>, ${pronoun} virtual.<br>${welcomeMessage}`;
 
-        // Edit panel values
-        function mapToEditPanelValues(config) {
-            return new Map([
-                ['company_name', config.company_name || defaultConfig.company_name],
-                ['welcome_message', config.welcome_message || defaultConfig.welcome_message],
-                ['contact_info', config.contact_info || defaultConfig.contact_info]
-            ]);
-        }
-
-        // Iniciar questionário
-        function startQuestionnaire() {
-            document.getElementById('welcomeScreen').style.display = 'none';
-            document.getElementById('questionCard').style.display = 'block';
-            
-            // Montar questionário dinâmico
-            questions = [...baseQuestions, ...universalQuestions];
-            questionnaire = [...questions];
-            currentQuestion = 0;
-            answers = {};
-            showQuestion();
-        }
-
-        // Função para adicionar perguntas condicionais
-        function addConditionalQuestions() {
-            const usesGlasses = answers.uses_glasses;
-            
-            // Inserir perguntas condicionais após a pergunta sobre uso de óculos
-            let insertIndex = 2; // Após idade e uso de óculos
-            
-            if (['yes', 'sometimes'].includes(usesGlasses)) {
-                // Adicionar perguntas para usuários de óculos
-                questionsForGlassUsers.forEach((q, index) => {
-                    questionnaire.splice(insertIndex + index, 0, q);
-                });
-            } else if (['no', 'contact'].includes(usesGlasses)) {
-                // Adicionar perguntas para não usuários
-                questionsForNonUsers.forEach((q, index) => {
-                    questionnaire.splice(insertIndex + index, 0, q);
-                });
+            // Atualizar outras telas
+            if (document.querySelector('.quiz-title')) {
+                document.querySelector('.quiz-title').textContent = `Quiz ${companyName}`;
             }
+            if (document.querySelector('.welcome-message')) {
+                document.querySelector('.welcome-message').textContent = "Descubra as lentes ideais para você em apenas 10 perguntas!";
+            }
+            if (document.querySelector('.discount-banner p')) {
+                document.querySelector('.discount-banner p').textContent = discountText;
+            }
+        }
+
+        // Inicializar o quiz
+        function initQuiz() {
+            currentQuestion = 0;
+            answers = [];
+            userProfile = { ageGroup: '', usesGlasses: '' };
+            document.getElementById('questionContainer').style.display = 'block';
+            document.getElementById('resultContainer').style.display = 'none';
+            showQuestion();
         }
 
         // Mostrar pergunta atual
         function showQuestion() {
-            if (currentQuestion >= questionnaire.length) {
-                processAnswers();
-                return;
+            const questionContainer = document.getElementById('questionContainer');
+            questionContainer.classList.add('fade-in');
+
+            updateProgress();
+
+            let question;
+            if (currentQuestion < 2) {
+                question = fixedQuestions[currentQuestion];
+            } else {
+                const profileKey = `${userProfile.ageGroup}_${userProfile.usesGlasses}`;
+                const conditionalIndex = currentQuestion - 2;
+                const questionData = conditionalQuestions[profileKey][conditionalIndex];
+                question = {
+                    text: questionData.text,
+                    options: questionData.options.map(opt => ({ text: opt, value: opt }))
+                };
             }
 
-            const question = questionnaire[currentQuestion];
-            document.getElementById('questionTitle').textContent = question.title;
-            
+            document.getElementById('questionNumber').textContent = `Pergunta ${currentQuestion + 1} de 10`;
+            document.getElementById('questionText').textContent = question.text;
+
             const optionsContainer = document.getElementById('optionsContainer');
             optionsContainer.innerHTML = '';
 
-            question.options.forEach(option => {
-                const optionDiv = document.createElement('div');
-                optionDiv.className = 'option';
-                optionDiv.onclick = () => selectOption(question.id, option.value, optionDiv);
-                
-                optionDiv.innerHTML = `
-                    <div class="option-icon">${option.icon}</div>
-                    <div class="option-text">
-                        <div class="option-title">${option.title}</div>
-                        <div class="option-desc">${option.desc}</div>
-                    </div>
-                `;
-                
-                optionsContainer.appendChild(optionDiv);
+            question.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.className = 'option-button slide-in';
+                button.style.animationDelay = `${index * 0.1}s`;
+                button.innerHTML = colorirParenteses(option.text);
+                button.onclick = () => selectOption(option);
+                optionsContainer.appendChild(button);
             });
-
-            updateProgress();
-            updateNavigation();
         }
 
         // Selecionar opção
-        function selectOption(questionId, value, element) {
-            // Remove seleção anterior
-            document.querySelectorAll('.option').forEach(opt => {
-                opt.classList.remove('selected');
+        function selectOption(option) {
+            const buttons = document.querySelectorAll('.option-button');
+            buttons.forEach(btn => {
+                if (btn.textContent === option.text) {
+                    btn.classList.add('selected');
+                }
             });
-            
-            // Adiciona seleção atual
-            element.classList.add('selected');
-            answers[questionId] = value;
-            
-            // Habilita botão próximo
-            document.getElementById('nextBtn').disabled = false;
-        }
 
-        // Próxima pergunta
-        function nextQuestion() {
-            // Se acabou de responder sobre uso de óculos, adicionar perguntas condicionais
-            if (currentQuestion === 1 && answers.uses_glasses) {
-                addConditionalQuestions();
+            // Armazenar resposta
+            answers.push(option);
+
+            // Definir perfil nas duas primeiras perguntas
+            if (currentQuestion === 0) {
+                userProfile.ageGroup = option.value;
+            } else if (currentQuestion === 1) {
+                userProfile.usesGlasses = option.value;
             }
-            
-            if (currentQuestion < questionnaire.length - 1) {
-                currentQuestion++;
-                showQuestion();
-            } else {
-                processAnswers();
-            }
-        }
 
-        // Pergunta anterior
-        function previousQuestion() {
-            if (currentQuestion > 0) {
-                currentQuestion--;
-                showQuestion();
-            }
-        }
-
-        // Atualizar progresso
-        function updateProgress() {
-            const progress = ((currentQuestion + 1) / questionnaire.length) * 100;
-            document.getElementById('progressFill').style.width = progress + '%';
-        }
-
-        // Atualizar navegação
-        function updateNavigation() {
-            document.getElementById('prevBtn').disabled = currentQuestion === 0;
-            document.getElementById('nextBtn').disabled = !answers[questionnaire[currentQuestion].id];
-        }
-
-        // Processar respostas com IA
-        async function processAnswers() {
-            document.getElementById('questionCard').style.display = 'none';
-            document.getElementById('loadingScreen').style.display = 'block';
-
-            // Simular processamento IA (3 segundos)
+            // Avançar após um breve delay
             setTimeout(() => {
-                const recommendation = generateRecommendation();
-                showResult(recommendation);
-                saveSession(recommendation);
-            }, 3000);
+                currentQuestion++;
+                if (currentQuestion < 10) {
+                    showQuestion();
+                } else {
+                    showResults();
+                }
+            }, 800);
         }
 
-        // Gerar recomendação baseada nas respostas
-        function generateRecommendation() {
-            const age = parseInt(answers.age?.split('-')[0]) || 25;
-            const usesGlasses = answers.uses_glasses;
-            const isPresbyopic = age >= 40 || answers.lens_type_current === 'progressive';
-            const highScreenTime = ['6-8h', '8h+'].includes(answers.screen_time);
-            const outdoorLifestyle = ['outdoor', 'mixed', 'driver', 'sports'].includes(answers.lifestyle);
-            const budget = answers.budget || 'premium';
-
-            let profileType = '';
-            let lenses = [];
-            let treatments = [];
-            let offer = '';
-            let discount = '25%';
-
-            // Determinar perfil baseado no uso atual de óculos
-            if (['yes', 'sometimes'].includes(usesGlasses)) {
-                // Para usuários atuais de óculos
-                if (answers.satisfaction === 'very_unsatisfied' || answers.current_problem === 'outdated') {
-                    profileType = 'Upgrade Urgente';
-                    discount = '35%';
-                } else if (isPresbyopic || answers.lens_type_current === 'progressive') {
-                    profileType = 'Progressivo Avançado';
-                } else if (answers.current_problem === 'multiple_pairs') {
-                    profileType = 'Segundo Par Especializado';
-                    discount = '30%';
-                } else {
-                    profileType = 'Renovação Premium';
-                }
-            } else {
-                // Para novos usuários
-                if (answers.vision_complaints === 'none' && answers.motivation === 'prevention') {
-                    profileType = 'Proteção Preventiva';
-                } else if (answers.motivation === 'work' || highScreenTime) {
-                    profileType = 'Digital Professional';
-                } else if (isPresbyopic) {
-                    profileType = 'Progressivo Iniciante';
-                } else {
-                    profileType = 'Primeira Correção';
-                    discount = '40%'; // Desconto especial para primeiro óculos
-                }
-            }
-
-            // Lentes baseadas no perfil
-            if (profileType.includes('Progressivo')) {
-                lenses = [
-                    '🔹 Varilux Physio Enhanced DRx (transição suave + conforto digital)',
-                    '🔹 Zeiss Individual 2 (personalização total baseada no seu uso)',
-                    '🔹 Hoya Lifestyle V+ (design intuitivo para adaptação rápida)'
-                ];
-            } else if (profileType.includes('Digital') || highScreenTime) {
-                lenses = [
-                    '🔹 Zeiss DuraVision BlueProtect (máxima proteção digital)',
-                    '🔹 Hoya BlueControl Plus (reduz fadiga ocular)',
-                    '🔹 Essilor Eyezen+ (otimizada para telas e dispositivos)'
-                ];
-            } else if (outdoorLifestyle || answers.lifestyle === 'driver') {
-                lenses = [
-                    '🔹 Zeiss DriveSafe (visão noturna + redução de ofuscamento)',
-                    '🔹 Transitions XTRActive (escurece até dentro do carro)',
-                    '🔹 Hoya EnRoute Pro (otimizada para direção)'
-                ];
-            } else {
-                lenses = [
-                    '🔹 Zeiss SingleVision Individual (campo visual personalizado)',
-                    '🔹 Hoya Hilux 1.67 (ultra-fina e resistente)',
-                    '🔹 Essilor Airwear (proteção contra impactos)'
-                ];
-            }
-
-            // Tratamentos baseados nas necessidades
-            treatments = [];
-            
-            if (highScreenTime || answers.symptoms === 'eye_strain') {
-                treatments.push('🔹 BlueGuard Premium (proteção luz azul + redução fadiga)');
-            }
-            
-            if (outdoorLifestyle || answers.symptoms === 'sensitivity') {
-                treatments.push('🔹 Transitions Signature GEN 8 (adaptação rápida à luz)');
-            }
-            
-            if (answers.priority === 'durability' || answers.lifestyle === 'sports') {
-                treatments.push('🔹 Crizal Rock (máxima resistência a riscos)');
-            }
-            
-            if (answers.priority === 'aesthetics') {
-                treatments.push('🔹 Crizal Sapphire UV (transparência cristalina)');
-            }
-            
-            treatments.push('🔹 Super Hi-Vision (antirreflexo premium)');
-            treatments.push('🔹 Proteção UV 400 (bloqueio total raios nocivos)');
-
-            // Oferta personalizada baseada no perfil e orçamento
-            const offerMap = {
-                'luxury': `✨ Pacote Luxo Completo: Lente Premium + Todos os Tratamentos + Armação de Grife`,
-                'premium': `✨ Pacote Premium Digital: Lente Avançada + Proteção Blue + Transitions`,
-                'essential': `✨ Pacote Essencial Plus: Lente de Qualidade + Antirreflexo + UV`,
-                'flexible': `✨ Pacote Personalizado: Combinação ideal para seu perfil`
-            };
-
-            offer = offerMap[budget] || offerMap['premium'];
-
-            return {
-                profileType,
-                lenses,
-                treatments,
-                offer,
-                discount,
-                analysis: generateAnalysis()
-            };
+        // Atualizar barra de progresso
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / 10) * 100;
+            document.getElementById('progressFill').style.width = `${progress}%`;
         }
 
-        // Gerar análise do perfil
-        function generateAnalysis() {
-            const age = answers.age || '26-35';
-            const screenTime = answers.screen_time || '3-5h';
-            const vision = answers.vision_problem || 'myopia';
-            
-            return `
-                <div style="display: grid; gap: 15px;">
-                    <div>📅 <strong>Faixa etária:</strong> ${age} anos</div>
-                    <div>💻 <strong>Uso digital:</strong> ${screenTime}/dia</div>
-                    <div>👁️ <strong>Correção:</strong> ${getVisionDescription(vision)}</div>
-                    <div>🎯 <strong>Prioridade:</strong> ${getPriorityDescription(answers.priority)}</div>
+        // Mostrar resultados
+        function showResults() {
+            document.getElementById('questionContainer').style.display = 'none';
+            document.getElementById('resultContainer').style.display = 'block';
+            document.getElementById('resultContainer').classList.add('fade-in');
+
+            generateRecommendations();
+        }
+
+        // Sistema inteligente de análise de respostas
+        function analyzeAnswers() {
+            let score = {
+                digitalStrain: 0,
+                outdoorActivity: 0,
+                readingNeed: 0,
+                sensitivityLevel: 0,
+                budgetLevel: 0,
+                stylePreference: 0,
+                durabilityNeed: 0,
+                comfortPriority: 0
+            };
+
+            // Analisar cada resposta para calcular pontuações
+            answers.forEach((answer, index) => {
+                const answerText = answer.text.toLowerCase();
+
+                // Análise de fadiga digital
+                if (answerText.includes('computador') || answerText.includes('celular') || answerText.includes('8 horas')) {
+                    score.digitalStrain += 3;
+                } else if (answerText.includes('4-8 horas') || answerText.includes('tablet')) {
+                    score.digitalStrain += 2;
+                } else if (answerText.includes('2-4 horas')) {
+                    score.digitalStrain += 1;
+                }
+
+                // Análise de atividades ao ar livre
+                if (answerText.includes('ar livre') || answerText.includes('aquáticos') || answerText.includes('sempre')) {
+                    score.outdoorActivity += 3;
+                } else if (answerText.includes('frequentemente') || answerText.includes('outdoor')) {
+                    score.outdoorActivity += 2;
+                } else if (answerText.includes('às vezes')) {
+                    score.outdoorActivity += 1;
+                }
+
+                // Análise de necessidade de leitura
+                if (answerText.includes('leitura') || answerText.includes('perto') || answerText.includes('pequenos')) {
+                    score.readingNeed += 3;
+                } else if (answerText.includes('trabalhos') || answerText.includes('detalhados')) {
+                    score.readingNeed += 2;
+                }
+
+                // Análise de sensibilidade
+                if (answerText.includes('muito') && (answerText.includes('sensível') || answerText.includes('incomodo'))) {
+                    score.sensitivityLevel += 3;
+                } else if (answerText.includes('moderadamente') || answerText.includes('frequentemente')) {
+                    score.sensitivityLevel += 2;
+                } else if (answerText.includes('pouco') || answerText.includes('às vezes')) {
+                    score.sensitivityLevel += 1;
+                }
+
+                // Análise de preferência de orçamento
+                if (answerText.includes('premium') || answerText.includes('durabilidade') || answerText.includes('qualidade')) {
+                    score.budgetLevel += 3;
+                } else if (answerText.includes('moderado') || answerText.includes('equilibrio')) {
+                    score.budgetLevel += 2;
+                } else if (answerText.includes('básico') || answerText.includes('custo')) {
+                    score.budgetLevel += 1;
+                }
+
+                // Análise de estilo
+                if (answerText.includes('moderno') || answerText.includes('arrojado') || answerText.includes('tecnológico')) {
+                    score.stylePreference += 3;
+                } else if (answerText.includes('elegante') || answerText.includes('sofisticado')) {
+                    score.stylePreference += 2;
+                } else if (answerText.includes('clássico') || answerText.includes('discreto')) {
+                    score.stylePreference += 1;
+                }
+
+                // Análise de necessidade de durabilidade
+                if (answerText.includes('esportes') || answerText.includes('ativo') || answerText.includes('resistência')) {
+                    score.durabilityNeed += 3;
+                } else if (answerText.includes('trabalho') || answerText.includes('uso frequente')) {
+                    score.durabilityNeed += 2;
+                }
+
+                // Análise de prioridade de conforto
+                if (answerText.includes('conforto') || answerText.includes('leveza') || answerText.includes('adaptação')) {
+                    score.comfortPriority += 3;
+                } else if (answerText.includes('facilidade') || answerText.includes('prático')) {
+                    score.comfortPriority += 2;
+                }
+            });
+
+            return score;
+        }
+
+        // Gerar recomendações baseadas na análise inteligente
+        function generateRecommendations() {
+            const profileKey = `${userProfile.ageGroup}_${userProfile.usesGlasses}`;
+            const analysis = analyzeAnswers();
+            let recommendations = {};
+
+            // Determinar categoria de lente baseada na análise
+            let lensCategory = 'standard';
+            if (analysis.digitalStrain >= 6) lensCategory = 'digital';
+            if (analysis.readingNeed >= 6) lensCategory = 'reading';
+            if (analysis.outdoorActivity >= 6) lensCategory = 'outdoor';
+            if (analysis.sensitivityLevel >= 6) lensCategory = 'sensitive';
+
+            // Determinar nível de qualidade baseado no orçamento e necessidades
+            let qualityLevel = 'basic';
+            if (analysis.budgetLevel >= 4 || analysis.durabilityNeed >= 4) qualityLevel = 'premium';
+            else if (analysis.budgetLevel >= 2 || analysis.comfortPriority >= 4) qualityLevel = 'intermediate';
+
+            // Gerar recomendações específicas baseadas no perfil e análise
+            switch (profileKey) {
+                case 'young_uses':
+                    if (lensCategory === 'digital' && qualityLevel === 'premium') {
+                        recommendations = {
+                            lentes: "Zeiss BlueGuard Premium com filtro seletivo de luz azul-violeta (400-455nm) - Reduz 40% da luz azul nociva mantendo a percepção natural das cores",
+                            tratamento: "Crizal Prevencia + Sapphire UV - Dupla proteção: anti-reflexo premium + filtro luz azul integrado. Resistência 25x superior a riscos",
+                            espessura: "Índice 1.74 Zeiss ou Essilor - Lentes 60% mais finas que convencionais. Ideal para graus altos (-6.00 a -12.00)",
+                            marcas: "🥇 Zeiss (Alemanha) - Tecnologia Carl Zeiss com 175 anos de inovação óptica | 🥈 Essilor (França) - Líder mundial em lentes oftálmicas"
+                        };
+                    } else if (lensCategory === 'digital' && qualityLevel === 'intermediate') {
+                        recommendations = {
+                            lentes: "Essilor EyeZen+ ou Hoya Sync III - Filtro luz azul + alívio de acomodação para uso prolongado de telas digitais",
+                            tratamento: "Crizal Easy Pro ou Hoya Super HiVision - Anti-reflexo com proteção UV completa e facilidade de limpeza",
+                            espessura: "Índice 1.67 - Equilíbrio perfeito entre finura, peso e custo. Reduz 40% da espessura vs lentes convencionais",
+                            marcas: "🥇 Essilor EyeZen - Especialista em fadiga visual digital | 🥈 Hoya Sync - Tecnologia japonesa de precisão"
+                        };
+                    } else {
+                        recommendations = {
+                            lentes: "Hoya BlueControl ou Essilor Crizal Prevencia - Proteção básica contra luz azul com excelente custo-benefício",
+                            tratamento: "Crizal Easy UV ou Hoya HiVision LongLife - Proteção UV 100% + anti-reflexo durável",
+                            espessura: "Índice 1.60 - Lentes 25% mais finas com ótima relação custo x benefício para graus baixos a médios",
+                            marcas: "🥇 Hoya (Japão) - Qualidade japonesa acessível | 🥈 Essilor Orma - Linha econômica premium"
+                        };
+                    }
+                    break;
+
+                case 'young_doesnt_use':
+                    if (analysis.digitalStrain >= 4) {
+                        recommendations = {
+                            lentes: "Zeiss Digital Lens ou Essilor Computer - Lentes específicas para prevenção de fadiga digital mesmo sem grau",
+                            tratamento: "Crizal Prevencia ou Zeiss BlueProtect - Filtro seletivo de luz azul mantendo cores naturais",
+                            espessura: "Índice 1.56 CR-39 - Material clássico com excelente qualidade óptica e durabilidade comprovada",
+                            marcas: "🥇 Zeiss Digital - Tecnologia alemã para era digital | 🥈 Essilor Computer - Especialista em conforto visual"
+                        };
+                    } else if (analysis.outdoorActivity >= 4) {
+                        recommendations = {
+                            lentes: "Transitions Signature GEN8 ou Zeiss PhotoFusion X - Lentes fotossensíveis de última geração",
+                            tratamento: "Crizal Rock ou Zeiss DuraVision Platinum - Máxima resistência a riscos e impactos",
+                            espessura: "Índice 1.60 Policarbonato - Material ultra-resistente, 10x mais resistente que lentes convencionais",
+                            marcas: "🥇 Transitions (EUA) - Líder mundial em lentes fotossensíveis | 🥈 Zeiss PhotoFusion - Tecnologia alemã premium"
+                        };
+                    } else {
+                        recommendations = {
+                            lentes: "Essilor Orma ou Hoya Hilux - Lentes básicas de alta qualidade para proteção preventiva",
+                            tratamento: "Crizal Easy ou Hoya HiVision - Proteção UV básica com anti-reflexo essencial",
+                            espessura: "Índice 1.56 - Padrão internacional com excelente qualidade óptica e preço acessível",
+                            marcas: "🥇 Essilor Orma - Qualidade francesa acessível | 🥈 Hoya Hilux - Confiabilidade japonesa"
+                        };
+                    }
+                    break;
+
+                case 'old_uses':
+                    if (qualityLevel === 'premium') {
+                        recommendations = {
+                            lentes: "Varilux X Series ou Zeiss SmartLife Individual - Multifocais personalizadas com tecnologia de ponta",
+                            tratamento: "Crizal Sapphire 360° ou Zeiss DuraVision Platinum - Proteção 360° com clareza cristalina",
+                            espessura: "Índice 1.74 - Lentes ultrafinas para máximo conforto estético em multifocais",
+                            marcas: "🥇 Varilux (Essilor) - Inventor das lentes progressivas há 60 anos | 🥈 Zeiss Individual - Personalização alemã premium"
+                        };
+                    } else if (qualityLevel === 'intermediate') {
+                        recommendations = {
+                            lentes: "Varilux Comfort Max ou Zeiss Precision Pure - Multifocais com adaptação facilitada",
+                            tratamento: "Crizal Forte UV ou Zeiss DuraVision Silver - Durabilidade superior com proteção completa",
+                            espessura: "Índice 1.67 - Redução significativa de peso e espessura para uso confortável prolongado",
+                            marcas: "🥇 Varilux Comfort - Adaptação suave garantida | 🥈 Zeiss Precision - Tecnologia alemã acessível"
+                        };
+                    } else {
+                        recommendations = {
+                            lentes: "Varilux Liberty ou Hoya Balanço - Multifocais básicas com qualidade comprovada",
+                            tratamento: "Crizal Easy Pro ou Hoya Super HiVision - Proteção essencial com facilidade de limpeza",
+                            espessura: "Índice 1.60 - Equilíbrio ideal entre qualidade óptica e custo para multifocais",
+                            marcas: "🥇 Varilux Liberty - Entrada premium no mundo multifocal | 🥈 Hoya Balanço - Qualidade japonesa acessível"
+                        };
+                    }
+                    break;
+
+                case 'old_doesnt_use':
+                    if (analysis.readingNeed >= 6) {
+                        recommendations = {
+                            lentes: "Essilor Eyezen Start+ ou Zeiss OfficeLife - Lentes de apoio para presbiopia inicial com suporte acomodativo",
+                            tratamento: "Transitions Signature ou Zeiss PhotoFusion - Adaptação automática à luminosidade para máximo conforto",
+                            espessura: "Índice 1.60 - Otimizado para adaptação gradual com excelente qualidade óptica",
+                            marcas: "🥇 Essilor Eyezen - Especialista em presbiopia inicial | 🥈 Zeiss Office - Conforto visual alemão"
+                        };
+                    } else {
+                        recommendations = {
+                            lentes: "Essilor Single Vision ou Hoya Hilux - Lentes monofocais básicas para adaptação suave",
+                            tratamento: "Crizal Easy ou Hoya HiVision - Proteção UV essencial com anti-reflexo básico",
+                            espessura: "Índice 1.56 - Padrão clássico com adaptação facilitada e custo acessível",
+                            marcas: "🥇 Essilor Single - Qualidade francesa confiável | 🥈 Hoya Basic - Entrada suave no mundo dos óculos"
+                        };
+                    }
+                    break;
+            }
+
+            // Adicionar recomendação personalizada baseada na análise
+            let personalizedTip = "";
+            if (analysis.digitalStrain >= 6) {
+                personalizedTip = "💡 Dica Personalizada: Suas respostas indicam alto uso de dispositivos digitais. Recomendamos pausas de 20 segundos a cada 20 minutos olhando para algo a 20 metros de distância (regra 20-20-20).";
+            } else if (analysis.outdoorActivity >= 6) {
+                personalizedTip = "💡 Dica Personalizada: Seu perfil ativo requer proteção UV superior. Considere lentes com proteção UV 400 e tratamento hidrofóbico para facilitar a limpeza.";
+            } else if (analysis.readingNeed >= 6) {
+                personalizedTip = "💡 Dica Personalizada: Para atividades de leitura prolongada, recomendamos iluminação adequada (500-1000 lux) e posicionamento da leitura a 35-40cm dos olhos.";
+            } else if (analysis.sensitivityLevel >= 6) {
+                personalizedTip = "💡 Dica Personalizada: Sua sensibilidade à luz pode ser aliviada com lentes fotossensíveis que se adaptam automaticamente às condições de luminosidade.";
+            }
+
+            const content = document.getElementById('recommendationsContent');
+            content.innerHTML = `
+                <div style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+                    <h3 style="margin: 0 0 10px 0; font-size: 1.3rem;">🎯 Esse foi o resultado que mais se encaixa com o seu perfil!</h3>
+                    <p style="margin: 0; opacity: 0.9;">Análise inteligente baseada em ${answers.length} respostas personalizadas</p>
+                </div>
+                
+                ${personalizedTip ? `<div style="background: #2d3748; border-left: 4px solid #667eea; padding: 15px; margin-bottom: 20px; border-radius: 8px;">
+                    <p style="margin: 0; color: #cbd5e0; font-size: 0.95rem;">${personalizedTip}</p>
+                </div>` : ''}
+                
+                <div class="recommendation-card">
+                    <div class="recommendation-title">🔍 Lentes Recomendadas</div>
+                    <div class="recommendation-text">${recommendations.lentes}</div>
+                </div>
+                <div class="recommendation-card">
+                    <div class="recommendation-title">✨ Tratamentos Premium</div>
+                    <div class="recommendation-text">${recommendations.tratamento}</div>
+                </div>
+                <div class="recommendation-card">
+                    <div class="recommendation-title">📏 Índice de Refração</div>
+                    <div class="recommendation-text">${recommendations.espessura}</div>
+                </div>
+                <div class="recommendation-card">
+                    <div class="recommendation-title">🏆 Marcas Recomendadas</div>
+                    <div class="recommendation-text">${recommendations.marcas}</div>
                 </div>
             `;
         }
 
-        // Descrições auxiliares
-        function getVisionDescription(vision) {
-            const descriptions = {
-                'myopia': 'Miopia',
-                'hyperopia': 'Hipermetropia', 
-                'astigmatism': 'Astigmatismo',
-                'presbyopia': 'Presbiopia',
-                'multiple': 'Múltiplos problemas'
-            };
-            return descriptions[vision] || 'Correção visual';
+        // Iniciar quiz (transição da tela de abertura)
+        function startQuiz() {
+            document.getElementById('introScreen').style.display = 'none';
+            document.getElementById('quizContainer').style.display = 'block';
+            document.getElementById('quizContainer').classList.add('fade-in');
+            initQuiz();
         }
 
-        function getPriorityDescription(priority) {
-            const descriptions = {
-                'comfort': 'Conforto visual',
-                'aesthetics': 'Estética',
-                'protection': 'Proteção',
-                'durability': 'Durabilidade',
-                'price': 'Custo-benefício'
-            };
-            return descriptions[priority] || 'Qualidade geral';
-        }
-
-        // Mostrar resultado
-        function showResult(recommendation) {
-            document.getElementById('loadingScreen').style.display = 'none';
-            document.getElementById('resultScreen').style.display = 'block';
-
-            document.getElementById('profileBadge').textContent = recommendation.profileType;
-            document.getElementById('profileAnalysis').innerHTML = recommendation.analysis;
-            
-            const lensContainer = document.getElementById('lensRecommendations');
-            lensContainer.innerHTML = recommendation.lenses.map(lens => `<li>${lens}</li>`).join('');
-            
-            const treatmentContainer = document.getElementById('treatmentRecommendations');
-            treatmentContainer.innerHTML = recommendation.treatments.map(treatment => `<li>${treatment}</li>`).join('');
-            
-            document.getElementById('personalizedOffer').innerHTML = `<strong>${recommendation.offer}</strong>`;
-            
-            // Atualizar desconto na badge
-            const discountBadge = document.querySelector('.discount-badge');
-            discountBadge.textContent = `${recommendation.discount} OFF`;
-        }
-
-        // Salvar sessão
-        async function saveSession(recommendation) {
-            if (window.dataSdk && currentData.length < 999) {
-                try {
-                    const sessionData = {
-                        session_id: generateSessionId(),
-                        answers: JSON.stringify(answers),
-                        recommendation: JSON.stringify(recommendation),
-                        timestamp: new Date().toISOString(),
-                        profile_type: recommendation.profileType
-                    };
-
-                    const result = await window.dataSdk.create(sessionData);
-                    if (!result.isOk) {
-                        console.error('Erro ao salvar sessão');
-                    }
-                } catch (error) {
-                    console.error('Erro ao salvar:', error);
-                }
-            }
-        }
-
-        // Gerar ID da sessão
-        function generateSessionId() {
-            return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-        }
-
-        // Imprimir resultado
-        function printResult() {
-            const printContent = document.getElementById('resultScreen').innerHTML;
-            const printWindow = window.open('', '_blank');
-            
-            printWindow.document.write(`
-                <html>
-                <head>
-                    <title>Análise Técnica CDO - Resultado</title>
-                    <style>
-                        body { font-family: Arial, sans-serif; margin: 20px; color: #333; }
-                        .result-title { color: #0066cc; font-size: 24px; margin-bottom: 20px; }
-                        .profile-badge { background: #0066cc; color: white; padding: 8px 16px; border-radius: 20px; }
-                        .section-title { color: #0066cc; font-size: 18px; margin: 20px 0 10px 0; }
-                        .recommendation-item { margin: 15px 0; padding: 15px; border-left: 4px solid #0066cc; }
-                        .offer-card { border: 2px solid #0066cc; padding: 20px; margin: 20px 0; text-align: center; }
-                        .discount-badge { background: #ff6b35; color: white; padding: 10px 20px; border-radius: 20px; }
-                        ul { list-style: none; padding: 0; }
-                        li { padding: 5px 0; }
-                        @media print { body { margin: 0; } }
-                    </style>
-                </head>
-                <body>
-                    <h1>📊 Análise Técnica CDO</h1>
-                    ${printContent}
-                    <div style="margin-top: 30px; text-align: center; color: #666;">
-                        <p>📱 Entre em contato para orçamento detalhado</p>
-                        <p><strong>WhatsApp: (11) 99999-9999</strong></p>
-                    </div>
-                </body>
-                </html>
-            `);
-            
-            printWindow.document.close();
-            printWindow.print();
-        }
-
-        // Compartilhar no WhatsApp para orçamento
+        // Compartilhar resultado
         function shareResult() {
-            const profileType = document.getElementById('profileBadge').textContent;
-            const companyName = document.getElementById('companyName').textContent;
-            const discount = document.querySelector('.discount-badge').textContent;
-            
-            const message = `🧠 *Análise Técnica ${companyName}*\n\n` +
-                           `✅ Perfil identificado: *${profileType}*\n\n` +
-                           `🎁 Oferta personalizada com *${discount}*\n\n` +
-                           `📋 Gostaria de receber um orçamento detalhado baseado nesta análise!\n\n` +
-                           `💬 Pode me enviar mais informações sobre as lentes recomendadas?`;
-            
-            const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
-            window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
-        }
+            // Mostrar tela de sucesso com animação
+            document.getElementById('resultContainer').style.display = 'none';
+            document.getElementById('successScreen').style.display = 'block';
+            document.getElementById('successScreen').classList.add('fade-in');
 
-        // Compartilhar com amigos para desconto extra
-        function shareToSocial() {
-            const profileType = document.getElementById('profileBadge').textContent;
-            const companyName = document.getElementById('companyName').textContent;
-            
-            const shareMessage = `🧠 Acabei de fazer uma análise técnica incrível na ${companyName}!\n\n` +
-                               `✅ Meu perfil: ${profileType}\n\n` +
-                               `🎁 Descobri exatamente quais lentes são ideais para mim!\n\n` +
-                               `👓 Faça você também e ganhe desconto especial!\n\n` +
-                               `#ÓculosPerfeitos #AnáliseTécnica #${companyName}`;
-            
-            // Tentar usar Web Share API se disponível
+            // Tentar compartilhar nativamente
             if (navigator.share) {
                 navigator.share({
-                    title: `Análise Técnica ${companyName}`,
-                    text: shareMessage,
+                    title: 'Meu Resultado do Quiz Óticas CDO',
+                    text: 'Descobri as lentes ideais para mim com a consultora virtual! Faça você também o quiz personalizado das Óticas CDO! 🤓✨',
                     url: window.location.href
-                }).catch(console.error);
+                });
             } else {
-                // Fallback para WhatsApp
-                const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(shareMessage)}`;
-                window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+                // Fallback para navegadores sem suporte ao Web Share API
+                const text = 'Descobri as lentes ideais para mim no Quiz das Óticas CDO! 🤓✨ Faça você também!';
+                navigator.clipboard.writeText(text).then(() => {
+                    // Mostrar mensagem inline ao invés de alert
+                    const successMsg = document.createElement('div');
+                    successMsg.innerHTML = '📋 Texto copiado! Cole nas suas redes sociais.';
+                    successMsg.style.cssText = 'background: #48bb78; color: white; padding: 10px; border-radius: 8px; margin: 10px 0; font-size: 0.9rem;';
+                    document.getElementById('successScreen').appendChild(successMsg);
+                    setTimeout(() => successMsg.remove(), 3000);
+                });
             }
-            
-            // Mostrar mensagem de confirmação
-            showShareConfirmation();
         }
 
-        // Mostrar confirmação de compartilhamento
-        function showShareConfirmation() {
-            const confirmation = document.createElement('div');
-            confirmation.style.cssText = `
-                position: fixed; top: 20px; right: 20px; z-index: 1000;
-                background: linear-gradient(45deg, #25d366, #128c7e);
-                color: white; padding: 15px 25px; border-radius: 10px;
-                box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-                animation: slideInRight 0.5s ease-out;
-            `;
-            confirmation.innerHTML = `
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <span>✅</span>
-                    <div>
-                        <div style="font-weight: 600;">Obrigado por compartilhar!</div>
-                        <div style="font-size: 0.9rem; opacity: 0.9;">Você ganhou +5% de desconto extra!</div>
-                    </div>
-                </div>
-            `;
-            
-            document.body.appendChild(confirmation);
-            
-            setTimeout(() => {
-                confirmation.remove();
-            }, 4000);
+        // Voltar aos resultados
+        function backToResults() {
+            document.getElementById('successScreen').style.display = 'none';
+            document.getElementById('resultContainer').style.display = 'block';
         }
 
-        // Inicializar aplicação
-        document.addEventListener('DOMContentLoaded', init);
+        // Reiniciar quiz
+        function restartQuiz() {
+            document.getElementById('resultContainer').style.display = 'none';
+            document.getElementById('successScreen').style.display = 'none';
+            document.getElementById('quizContainer').style.display = 'none';
+            document.getElementById('introScreen').style.display = 'block';
+
+            // Resetar estado
+            currentQuestion = 0;
+            answers = [];
+            userProfile = { ageGroup: '', usesGlasses: '' };
+        }
+
+        // Função para colorir o texto entre parênteses em azul
+        function colorirParenteses(texto) {
+            return texto.replace(/\(([^)]+)\)/g, '<span style="color: #00aaff;">($1)</span>');
+        }
+
+        // Configuração do Element SDK
+        const element = {
+            defaultConfig,
+            render,
+            mapToCapabilities: (config) => ({
+                recolorables: [],
+                borderables: [],
+                fontEditable: undefined,
+                fontSizeable: undefined
+            }),
+            mapToEditPanelValues: (config) => new Map([
+                ["quiz_title", config.quiz_title || defaultConfig.quiz_title],
+                ["welcome_message", config.welcome_message || defaultConfig.welcome_message],
+                ["discount_text", config.discount_text || defaultConfig.discount_text]
+            ])
+        };
+
+        // Inicializar quando a página carregar
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.elementSdk) {
+                window.elementSdk.init(element);
+            }
+            render(defaultConfig);
+            initQuiz();
+        });
     </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'991d5920d3cef610',t:'MTc2MTAxMzk4NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+    <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'9923a0fb95e8f610',t:'MTc2MTA3OTg0My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
+</body>
+
 </html>
